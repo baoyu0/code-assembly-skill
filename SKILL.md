@@ -364,7 +364,7 @@ hermes --skills code-assembly
 ### C. External Skills CLI（跨 Agent）
 
 ```bash
-npx skills add baoyu0/code-assembly-skill@code-assembly -g -y
+npx skills add baoyu0/skills@methodology/code-assembly -g -y
 ```
 
 适用于 Claude Code 和 Codex。安装后参考 `CLAUDE.md` / `AGENTS.md` 了解加载方式。
