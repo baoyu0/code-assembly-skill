@@ -25,33 +25,25 @@
 ```
 
 ### 1. 写清需求
-
 对齐目标、输入、输出、约束、验收标准。
 
 ### 2. 反向搜索
-
 按优先级三层搜索：**① 官方能力** → **② 社区成熟工具** → **③ 平台服务**
-
 每层不可跳过。如果当前层找不到，拆解能力领域到更细粒度继续搜。
 
 ### 3. 评估候选
-
 逐项过评估矩阵：维护状态、许可证、文档质量、生产案例、生态兼容、替换风险、接入成本。**不满足标准的果断放弃。**
 
 ### 4. 选择组合
-
 确定采用方案，**并记录决策理由**——"为什么不选 X"比"为什么选 Y"更有长期价值。
 
 ### 5. 设计边界
-
 固定接口契约：输入输出模型、适配器包装、错误处理、依赖隔离、回滚路径。
 
 ### 6. 生成胶水代码
-
 只写连接、适配、编排、配置、业务规则和测试。**绝不重新实现成熟能力本身的内部逻辑。**
 
 ### 7. 验证交付
-
 类型检查、集成测试、验收标准逐条过、留下证据、记录回滚路径。
 
 ---
@@ -74,34 +66,23 @@
 
 ## 安装
 
-### Hermes Agent
-
+### Hermes Agent (推荐 SOUL.md 注入)
 ```bash
+# 方法 A：SOUL.md 注入（始终生效）
+# 在 $HERMES_HOME/SOUL.md 末尾添加方法论节
+
+# 方法 B：CLI preload
+hermes --skills code-assembly
+
+# 方法 C：external CLI
 npx skills add baoyu0/code-assembly-skill@code-assembly -g -y
 ```
 
-或手动克隆到 skills 目录：
-
-```bash
-cd %LOCALAPPDATA%/hermes/skills/
-git clone https://github.com/baoyu0/code-assembly-skill.git code-assembly
-```
-
 ### Claude Code
-
-```
-/code-assembly — 加载本 skill
-```
-
-或添加到 `~/.claude/CLAUDE.md`：
-
-```markdown
-每次编码任务开始前先加载拼好码 skill。
-```
+参考项目中的 `CLAUDE.md`。
 
 ### Codex
-
-参考 `AGENTS.md` 了解兼容信息。
+参考项目中的 `AGENTS.md`。
 
 ---
 
@@ -109,15 +90,17 @@ git clone https://github.com/baoyu0/code-assembly-skill.git code-assembly
 
 ```
 code-assembly/
-├── SKILL.md                          # 主 skill（Hermes 格式）
+├── SKILL.md                          # 主 skill（Hermes 格式，v1.2.0）
 ├── AGENTS.md                         # Codex 多 Agent 兼容
 ├── CLAUDE.md                         # Claude Code 兼容
 ├── README.md                         # 本文件
+├── LICENSE                           # MIT License
 └── references/
     ├── requirement-template.md       # 需求描述模板
     ├── decision-record-template.md   # 方案决策记录模板
     ├── evaluation-matrix.md          # 候选评估矩阵模板
-    └── search-templates.md           # 搜索命令模板
+    ├── search-templates.md           # 搜索命令模板
+    └── soul-injection-pattern.md     # SOUL.md 部署指南
 ```
 
 ---

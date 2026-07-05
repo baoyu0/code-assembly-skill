@@ -1,6 +1,6 @@
 ---
 name: code-assembly
-version: 1.0.0
+version: 1.2.0
 description: "拼好码方法论 — 从实现者心态转向整合者心态。根据需求反向搜索成熟工具链与仓库，把已有能力编排成可验证的业务系统。"
 author: baoyu0
 tags: [methodology, workflow, integration, search-first, decision-record]
@@ -10,7 +10,7 @@ required_tools:
   - mcp_github_search_repositories
   - skills_list / skill_view
   - terminal (pip/npm/uv search)
-trigger: "新任务开始时自动加载，或在用户描述需求后由 find-skills / skill-router 触发。加载后先读完本 skill，然后按 7 步工作流执行。每步没通过就回到上一步重新搜，不硬推进。"
+trigger: "新任务开始时自动加载。先读 Quick Start 判断是否需要走完整流程；需要则按 7 步工作流执行，每步没通过就回到上一步重新搜，不硬推进。"
 ---
 
 # 拼好码：Code Assembly
@@ -34,6 +34,34 @@ trigger: "新任务开始时自动加载，或在用户描述需求后由 find-s
 | "这个工具我熟悉" | "确认一下有没有更新的替代品" |
 
 ---
+
+## Quick Start
+
+刚加载本 skill？直接照着做：
+
+```
+1. 读需求 → 2. 拆能力搜方案 → 3. 评估 → 4. 选+记录 → 5. 定边界 → 6. 写胶水 → 7. 验证
+```
+
+**前 30 秒**：判断任务是否小于 30 秒（见 When to Skip）。是→跳过。否→继续。
+**前 2 分钟**：拆能力、跑搜索、扫一眼 stars 和更新日。
+**前 5 分钟**：评估矩阵、选方案、定边界。
+**之后**：只写胶水代码，不做自研。
+
+> 第一次用不熟练很正常。强迫自己走完 3 次完整流程，直觉就养成了。
+
+## When to Skip（何时可以跳过本流程）
+
+不是所有任务都要走完整 7 步。以下场景允许跳过：
+
+| 场景 | 跳过级别 | 理由 |
+|------|----------|------|
+| 重命名文件、改参数、修 typo | 全部跳过 | 不需要工具选型 |
+| 已知唯一方案的常规操作（如 `git commit`） | 跳过搜索+评估 | 方案已确定 |
+| 用户明确指定工具/方案 | 跳过搜索+评估+选型 | 用户已决策 |
+| 紧急修复（生产宕机） | 仅走验证 | 先止血再优化 |
+
+**任何带「搜方案」价值的任务都不允许跳过。** 不确定时走完整流程。
 
 ## 7 步工作流
 
@@ -193,10 +221,6 @@ web_search_plus(query="<能力> vs OR comparison OR alternatives 2025")
 
 ## 实战案例
 
-> 以下是本 skill 在实践中验证过的真实案例，每个都经历了完整的 7 步流程。
-
-### 案例 1：Obsidian → Halo 发布流程
-
 **需求**：把本地 Markdown 处理（编号、清理）后发布到 Halo 博客。
 
 **搜索过程**：
@@ -306,6 +330,47 @@ web_search_plus(query="<能力> vs OR comparison OR alternatives 2025")
 
 ---
 
+## Installation & Deployment
+
+This skill supports three deployment modes:
+
+### A. SOUL.md Injection（推荐 — 始终生效）
+
+适用于 Hermes Agent。把 7 步口诀注入 `$HERMES_HOME/SOUL.md`，每次新对话自动生效，无需显式加载。
+
+做法：在 SOUL.md 末尾添加以下内容：
+
+```markdown
+## 方法论 === 拼好码（Code Assembly）
+每次新任务，**必须先**按以下流程执行，不走完不得动手：
+1. **写清需求** — 目标、输入、输出、约束、验收标准
+2. **反向搜索** — 拆能力 → ①官方 → ②社区 → ③平台
+3. **评估候选** — stars、许可证、更新日、生产案例
+4. **选组合 + 决策记录** — 为什么选、为什么不选、为什么不自研
+5. **设计边界** — 适配层、回滚路径
+6. **只写胶水代码** — 不重写成熟能力内部逻辑
+7. **验证交付** — 逐条过验收标准
+关键词：**能复用时不重造，能编排时不发明。**
+```
+
+### B. Hermes CLI Preload（每次会话指定）
+
+```bash
+hermes --skills code-assembly
+```
+
+或在会话中使用 `/skill code-assembly` 加载。
+
+### C. External Skills CLI（跨 Agent）
+
+```bash
+npx skills add baoyu0/code-assembly-skill@code-assembly -g -y
+```
+
+适用于 Claude Code 和 Codex。安装后参考 `CLAUDE.md` / `AGENTS.md` 了解加载方式。
+
+---
+
 ## 配套文件
 
 本 skill 包含以下额外文件，使用时按需查看：
@@ -316,9 +381,10 @@ web_search_plus(query="<能力> vs OR comparison OR alternatives 2025")
 | `references/decision-record-template.md` | 步骤 4 的方案决策记录模板 |
 | `references/evaluation-matrix.md` | 步骤 3 的候选评估矩阵模板 |
 | `references/search-templates.md` | 步骤 2 的直接可用搜索命令 |
+| `references/soul-injection-pattern.md` | SOUL.md 注入部署模式说明 |
 | `AGENTS.md` | Codex 等多 Agent 兼容文件 |
 | `CLAUDE.md` | Claude Code 兼容文件 |
 
 ---
 
-*Version 1.0.0 · 2026 · Author: baoyu0*
+*Version 1.2.0 · 2026 · Author: baoyu0*
